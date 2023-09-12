@@ -17,6 +17,8 @@ _MODEL_REGISTRY = {
     "AquilaForCausalLM": AquilaForCausalLM,  # AquilaChat2
     "BaiChuanForCausalLM": BaiChuanForCausalLM,  # baichuan-7b
     "BaichuanForCausalLM": BaichuanForCausalLM,  # baichuan-13b
+    "BaiChuan2ForCausalLM": BaiChuan2ForCausalLM,  # baichuan-7b
+    "Baichuan2ForCausalLM": Baichuan2ForCausalLM,  # baichuan-13b
     "BloomForCausalLM": BloomForCausalLM,
     "FalconForCausalLM": FalconForCausalLM,
     "GPT2LMHeadModel": GPT2LMHeadModel,
