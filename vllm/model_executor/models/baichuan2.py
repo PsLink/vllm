@@ -46,7 +46,7 @@ from vllm.model_executor.parallel_utils.parallel_state import (
     get_tensor_model_parallel_rank,
     get_tensor_model_parallel_world_size,
 )
-from vllm.model_executor.parallel_utils.tensor_parallel import (
+from vllm.model_executor.parallel_utils.layers import (
     VocabParallelEmbedding,
     ColumnParallelLinear,
     RowParallelLinear,
@@ -92,14 +92,12 @@ class MLP(torch.nn.Module):
             2 * intermediate_size,
             bias=False,
             gather_output=False,
-            perform_initialization=False,
         )
         self.down_proj = RowParallelLinear(
             intermediate_size,
             hidden_size,
             bias=False,
             input_is_parallel=True,
-            perform_initialization=False,
         )
         if hidden_act != "silu":
             raise ValueError(f"Unsupported activation: {hidden_act}. "
@@ -138,14 +136,12 @@ class BaichuanAttention(torch.nn.Module):
             3 * hidden_size,
             bias=False,
             gather_output=False,
-            perform_initialization=False,
         )
         self.o_proj = RowParallelLinear(
             self.total_num_heads * self.head_dim,
             hidden_size,
             bias=False,
             input_is_parallel=True,
-            perform_initialization=False,
         )
         # Create the alibi slopes and slice them.
         if self.postion_embedding == "ALIBI":
@@ -245,8 +241,7 @@ class BaichuanModel(nn.Module):
         self.vocab_size = config.vocab_size
         self.embed_tokens = VocabParallelEmbedding(
             config.vocab_size,
-            config.hidden_size,
-            perform_initialization=False)
+            config.hidden_size,)
         self.layers = nn.ModuleList([
             BaichuanLayer(config, position_embedding)
             for _ in range(config.num_hidden_layers)
@@ -290,7 +285,6 @@ class BaiChuanBaseForCausalLM(nn.Module):
             config.vocab_size,
             bias=False,
             gather_output=False,
-            perform_initialization=False,
         )
         self.sampler = Sampler(config.vocab_size)
 
