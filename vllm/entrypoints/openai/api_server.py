@@ -212,7 +212,7 @@ async def create_chat_completion(request: ChatCompletionRequest,
     request_id = f"cmpl-{random_uuid()}"
     created_time = int(time.monotonic())
     try:
-        spaces_between_special_tokens = request.spaces_between_special_tokens
+        #spaces_between_special_tokens = request.spaces_between_special_tokens
         sampling_params = SamplingParams(
             n=request.n,
             presence_penalty=request.presence_penalty,
